@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-gem 'rack', '1.6.11'
+gem 'rack', '3.1.8'
 gem 'rspec'
 gem 'rubocop'
-gem 'sinatra', '~> 1.4.8' # Originally had to use sinatra 2.0 but incompatible with rack 1.x
+gem 'sinatra', '~> 4.1.0' # Originally had to use sinatra 2.0 but incompatible with rack 1.x
