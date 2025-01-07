@@ -22,13 +22,13 @@ jobs:
         run: bundle install
 
       - name: Lint code
-        run: bundle exec rubocop
+        run: gem install rubocop && bundle exec rubocop
 
       - name: Scan for code vulnerabilities
-        run: bundle exec brakeman
+        run: gem install brakeman && bundle exec brakeman
 
       - name: Scan for dependency vulnerabilities
-        run: bundle exec bundler-audit
+        run: gem install bundler-audit && bundle exec bundler-audit update && bundle exec bundler-audit check
 
       - name: Run unit tests
         run: bundle exec rspec
