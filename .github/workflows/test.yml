@@ -25,7 +25,7 @@ jobs:
         run: gem install rubocop && bundle exec rubocop
 
       - name: Scan for dependency vulnerabilities
-        run: gem install bundler-audit && bundle exec bundler-audit update && bundle exec bundler-audit check
+        run: gem install bundler-audit && bundler-audit update && bundler-audit check
 
       - name: Run unit tests
         run: bundle exec rspec
