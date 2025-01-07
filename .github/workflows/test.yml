@@ -1,0 +1,41 @@
+name: Build and Deploy to test
+
+on:
+  push:
+    branches:
+      - test
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+
+      - name: Install dependencies
+        run: bundle install
+
+      - name: Lint code
+        run: bundle exec rubocop
+
+      - name: Scan for code vulnerabilities
+        run: bundle exec brakeman
+
+      - name: Scan for dependency vulnerabilities
+        run: bundle exec bundler-audit
+
+      - name: Run unit tests
+        run: bundle exec rspec
+
+    #   - name: Build Docker image
+    #     run: docker build -t ${{ secrets.DOCKER_USERNAME }}/ruby-app:develop .
+
+    #   - name: Push Docker image
+    #     run: |
+    #       echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+    #       docker push ${{ secrets.DOCKER_USERNAME }}/ruby-app:develop
