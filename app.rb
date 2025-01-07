@@ -1,6 +1,9 @@
-require 'sinatra'
-require 'erb'
+# frozen_string_literal: true
+require "sinatra"
+require "erb"
 
+# The App class serves as the main application logic.
+# It includes methods to handle user interactions.
 class App
   def self.greet(name)
     # Escape the name to prevent XSS
