@@ -25,7 +25,7 @@ jobs:
         run: gem install rubocop && bundle exec rubocop
 
       - name: Scan for code vulnerabilities
-        run: gem install brakeman && bundle exec brakeman
+        run: gem install brakeman && brakeman
 
       - name: Scan for dependency vulnerabilities
         run: gem install bundler-audit && bundle exec bundler-audit update && bundle exec bundler-audit check
