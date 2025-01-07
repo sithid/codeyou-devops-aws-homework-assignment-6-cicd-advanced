@@ -1,5 +1,6 @@
-# frozen_string_literal: true
 # spec/app_spec.rb
+
+# frozen_string_literal: true
 require_relative '../app'
 
 describe App do
