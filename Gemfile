@@ -2,10 +2,10 @@
 
 source 'https://rubygems.org'
 
+gem 'loofah', '2.2.3'
 gem 'puma'
 gem 'rack'
 gem 'rackup'
 gem 'rspec'
 gem 'rubocop'
-gem 'loofah', '2.2.3'
 gem 'sinatra'
