@@ -23,7 +23,7 @@ Students will design and implement a CI/CD pipeline using **GitHub Actions** for
    - Students must clone the repository and set it up locally.
 
 2. **Implement GitHub Actions Workflow**:
-   - Create two workflow files:
+   - Create two workflow files in the `.github/workflow/` directory (You'll need to create the directory also):
      1. **`main.yml`** for pushes to the `main` branch.
      2. **`develop.yml`** for pushes to the `develop` branch.
 
