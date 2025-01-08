@@ -43,14 +43,18 @@ Students will design and implement a CI/CD pipeline using **GitHub Actions** for
            ruby-version: '3.1'
      ```
 
-   **Step 2: Linting and Styling**
+   **Step 2: Setup Depdencies**
+   - Add a step that installs the dependencies for your Ruby project.
+   - **Hint:** Most often this is done using the `bundle` tool to install Gems. Some docs exist at [Gem Installation Guide](./Docs/Gem-Installation-Guide.md)
+   
+   **Step 3: Linting and Styling**
    - Add a step to check for code styling and linting using `rubocop`.
    - **Hint:** Refer to the [docs here for how RuboCop is used](./Docs/Using-Rubocop.md).
 
    **Step 3: Vulnerability Checks**
-   - Dependency Vulnerabilities: Use `bundler-audit` to check for dependency vulnerabilities
+   - Use `bundler-audit` to check for dependency vulnerabilities.
    - Be sure to update `bundler-audit`'s database of vulnerabilities before doing the check.
-   - **Hint**: Note that it will check your Gemfile (dependencies). There's only one Gem that specifies a version to install, the other Gems will be installed to the latest compatible version, i.e. if `sinatra` is specified at version 1 and depends on `rack` and `rack`'s version isn't specified then rack will be installed to the version most compatible with `sinatra`.
+   - **Hint**: Note that it will check your Gemfile (dependencies). There's only one Gem that specifies a version to install, the other Gems will be installed to the latest compatible version, i.e. if `sinatra` is specified at version 1 and depends on `rack` and `rack`'s version isn't specified then rack will be installed to the latest version most compatible with `sinatra`.
    - **Hint**: If you encounter high numbers of vulnerabilities then you may only need to change one of the dependencies.
 
    **Step 4: Unit Tests**
@@ -60,14 +64,15 @@ Students will design and implement a CI/CD pipeline using **GitHub Actions** for
    **Step 5: Docker Image Build and Push**
    - Build the Docker image for the Ruby application.
    - Push the image to a Docker registry (e.g., Docker Hub).
+   - Requimrenets for your `Dockerfile` are below:
 
-     **Step-by-Step Instructions for Building the Docker Image**:
+     **Requirements for Building the Docker Image**:
      1. Create a `Dockerfile` in the project root directory.
      2. Use a Ruby base image appropriate for the app's requirements.
         - **Hint**: Look through dockerhub for a ruby image to use as your base, likely best to stick to popular images or official/verified images.
      2. Setup a workspace inside the container where your app will live.
      3. Copy the necessary files into the container
-     4. Install app your dependencies.
+     4. Install your application dependencies.
         - **Hint**: In ruby dependencies are known as Gems and typically are defined in a `Gemfile`. This is the equivalent of `package.json` for NodeJS style apps, `requirements.txt` for python apps, nuget package references in `.csproj` files for .NET, and so on.
         - **Hint**: You'll notice that if you try to run the app then there are two packages missing, namely `rackup` and `puma`. Resolve these missing dependencies.
      4. Expose the port the app will run on (e.g., `4567` for Sinatra).
