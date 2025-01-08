@@ -48,8 +48,10 @@ Students will design and implement a CI/CD pipeline using **GitHub Actions** for
    - **Hint:** Refer to the [docs here for how RuboCop is used](./Docs/Using-Rubocop.md).
 
    **Step 3: Vulnerability Checks**
-   - Use GitHub DependencyBot for static code analysis to detect dependency vulnerabilities.
-   - No additional setup is required for this step.
+   - Dependency Vulnerabilities: Use `bundler-audit` to check for dependency vulnerabilities
+   - Be sure to update `bundler-audit`'s database of vulnerabilities before doing the check.
+   - **Hint**: Note that it will check your Gemfile (dependencies). There's only one Gem that specifies a version to install, the other Gems will be installed to the latest compatible version, i.e. if `sinatra` is specified at version 1 and depends on `rack` and `rack`'s version isn't specified then rack will be installed to the version most compatible with `sinatra`.
+   - **Hint**: If you encounter high numbers of vulnerabilities then you may only need to change one of the dependencies.
 
    **Step 4: Unit Tests**
    - Execute unit tests for the Ruby application using `rspec`.
