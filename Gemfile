@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-gem 'actionpack', '8.0'
+gem 'actionpack', '7.0'
 gem 'puma'
 gem 'rack'
 gem 'rackup'
