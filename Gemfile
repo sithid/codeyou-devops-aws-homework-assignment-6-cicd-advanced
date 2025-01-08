@@ -2,9 +2,9 @@
 
 source 'https://rubygems.org'
 
-gem 'actionpack', '7.0'
 gem 'puma'
 gem 'rack'
+gem 'rack-cors', '1.0.6'
 gem 'rackup'
 gem 'rspec'
 gem 'rubocop'
