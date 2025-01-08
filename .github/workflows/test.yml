@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - test
-      - test-pull-issues-from-here
 
 jobs:
   build:
