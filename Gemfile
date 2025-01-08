@@ -1,6 +1,11 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
-gem 'sinatra', '~> 2.0'
+gem 'puma'
+gem 'rack'
+gem 'rackup'
 gem 'rspec'
 gem 'rubocop'
-gem 'rack', '1.6.11'
+gem 'sinatra'
+gem 'actionpack', '4.1.15' 
