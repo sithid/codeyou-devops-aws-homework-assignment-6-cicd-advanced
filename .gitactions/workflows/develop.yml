@@ -26,7 +26,7 @@ jobs:
           bundle exec rubocop
       
       - name: Dependency Vulnerabilities
-        run: echo "Security Vulnerability checking handled by Dependabot!"
+        run: echo "Security Vulnerability checking handled by DependaBot!"
 
       - name: Unit Tests
         run: bundle exec rspec
