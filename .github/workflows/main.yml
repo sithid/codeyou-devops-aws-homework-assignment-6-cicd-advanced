@@ -46,7 +46,7 @@ jobs:
       - name: Set COMMIT_SHA for Tag
         run: echo "COMMIT_SHA=$(echo ${GITHUB_SHA} | cut -c 1-7)" >> $GITHUB_ENV
 
-      - name: Build Docker Image
+      - name: Build & Push Docker Image
         run: |
           echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
           docker build -t $DOCKER_USERNAME/$DOCKER_IMAGE:latest .
