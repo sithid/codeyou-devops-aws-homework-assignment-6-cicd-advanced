@@ -4,23 +4,24 @@ on:
   push:
     branches:
       - develop
+
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-  DOCKER_IMAGE: ruby-app:develop
+  DOCKER_IMAGE: ruby-app
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3   
-      
+        uses: actions/checkout@v3
+
       - name: Ruby Setup
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1'
-        
+
       - name: Install Dependencies
         run: bundle install
 
@@ -28,17 +29,23 @@ jobs:
         run: |
           gem install rubocop
           bundle exec rubocop
-      
+
       - name: Dependency Vulnerabilities
         run: echo "Security Vulnerability checking handled by DependaBot!"
 
       - name: Unit Tests
         run: bundle exec rspec
 
+      - name: Set COMMIT_SHA for Tag
+        run: echo "COMMIT_SHA=$(echo ${GITHUB_SHA} | cut -c 1-7)" >> $GITHUB_ENV
+
       - name: Build Docker Image
-        run: docker build -t $DOCKER_USERNAME/$DOCKER_IMAGE .
+        run: |
+          docker build -t $DOCKER_USERNAME/$DOCKER_IMAGE:develop .
+          docker tag $DOCKER_USERNAME/$DOCKER_IMAGE:develop $DOCKER_USERNAME/$DOCKER_IMAGE:${{ env.COMMIT_SHA }}
 
       - name: Push Docker Image
         run: |
           echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-          docker push $DOCKER_USERNAME/$DOCKER_IMAGE
+          docker push $DOCKER_USERNAME/$DOCKER_IMAGE:develop
+          docker push $DOCKER_USERNAME/$DOCKER_IMAGE:${{ env.COMMIT_SHA }}

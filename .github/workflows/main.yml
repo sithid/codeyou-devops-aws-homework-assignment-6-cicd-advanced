@@ -1,5 +1,5 @@
 name: Main CI Pipeline
-# Execute on push and pull requests.
+
 on:
   push:
     branches:
@@ -12,20 +12,23 @@ on:
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-  DOCKER_IMAGE: ruby-app:latest
-  
+  DOCKER_IMAGE: ruby-app
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.event.pull_request.head.ref == 'develop')
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3   
-      
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event_name == 'pull_request' && 'main' || '' }}
+
       - name: Ruby Setup
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1'
-        
+
       - name: Install Dependencies
         run: bundle install
 
@@ -33,17 +36,24 @@ jobs:
         run: |
           gem install rubocop
           bundle exec rubocop
-      
+
       - name: Dependency Vulnerabilities
         run: echo "Security Vulnerability checking handled by DependaBot!"
 
       - name: Unit Tests
         run: bundle exec rspec
 
-      - name: Build Docker Image
-        run: docker build -t $DOCKER_USERNAME/$DOCKER_IMAGE .
+      - name: Set COMMIT_SHA for Tag
+        run: echo "COMMIT_SHA=$(echo ${GITHUB_SHA} | cut -c 1-7)" >> $GITHUB_ENV
 
-      - name: Push Docker Image
+      - name: Build Docker Image
         run: |
-          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-          docker push $DOCKER_USERNAME/$DOCKER_IMAGE
+          docker build -t $DOCKER_USERNAME/$DOCKER_IMAGE:latest .
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]] || \
+             [[ "${{ github.event_name }}" == "pull_request" && "${{ github.event.pull_request.head.ref }}" == "develop" ]]; then
+            docker tag $DOCKER_USERNAME/$DOCKER_IMAGE:latest $DOCKER_USERNAME/$DOCKER_IMAGE:${{ env.COMMIT_SHA }}
+            docker push $DOCKER_USERNAME/$DOCKER_IMAGE:latest
+            docker push $DOCKER_USERNAME/$DOCKER_IMAGE:${{ env.COMMIT_SHA }}
+          else
+            docker push $DOCKER_USERNAME/$DOCKER_IMAGE:latest
+          fi
