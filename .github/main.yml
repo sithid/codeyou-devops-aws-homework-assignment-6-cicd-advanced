@@ -1,5 +1,5 @@
 name: Main CI Pipeline
-
+# Unknown issues causing pipeline not to execute on merge
 on:
   push:
     branches:
